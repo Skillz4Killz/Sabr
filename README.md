@@ -1,5 +1,8 @@
 # Sabr
 
+[![Discord](https://img.shields.io/discord/223909216866402304?color=7289da&logo=discord&logoColor=white)](https://discord.gg/J4NqJ72)
+[![nest.land](https://nest.land/badge-large.svg)](https://nest.land/package/Sabr)
+
 Deno database using JSON files for quick prototyping with amazing TypeScript support!
 
 ## Uses
