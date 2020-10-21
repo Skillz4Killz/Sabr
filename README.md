@@ -4,11 +4,7 @@ Deno database using JSON files for quick prototyping with amazing TypeScript sup
 
 ## Uses
 
-This should not be used in large scale production projects. This is only meant to be used as a tool to help prototype and get your projects up and running and off the floor.
-
-I created this only because Deno support for database drivers was lacking. Until a better solution presents itself like a stable driver and a stable ORM, I believe this can be immensely helpful for your small projects.
-
-You can build your projects with this as you go and switch over to your new database once it is ready.
+This should not be used in large scale production projects. This is only meant to be used as a tool to help prototype and get your projects off the floor. You can build your projects with this as you go and switch over to your new database once a driver is ready.
 
 ## Examples
 
