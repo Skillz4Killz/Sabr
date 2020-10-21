@@ -1,0 +1,10 @@
+name: Sabr
+description: Deno database using JSON files for quick prototyping with amazing TypeScript support!
+version: 1.0.0
+stable: true
+entry: mod.ts
+repository: 'https://github.com/Skillz4Killz/Sabr'
+files:
+  - ./**/*
+checkAll: false
+unlisted: false
