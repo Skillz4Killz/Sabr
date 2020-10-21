@@ -68,14 +68,25 @@ const single = await db.guilds.get("example");
 const all = await db.guilds.getAll();
 // Incase you want an array and not a Map
 const array = await db.guilds.getAll(true);
+// Get all documens with a match filter
+const matchObjs = await db.guilds.findMany({ test: "123", test2: "456" });
+const matchObjsArray = await db.guilds.findMany({ test: "123", test2: "456" }, true);
+// Get the first matching document
+const matchObj = await db.guilds.findOne({ test: "123", test2: "456" });
 // Check if a document exists
 const exists = db.guilds.has("example");
 // Create a document. Note you do not need to add `id: example` in the payload but you can if you so choose.
 db.guilds.create("example", { test: "strings", numbs: 123, arrays: ["123", 123] });
 // Update a document or create if it does not exist.
 await db.guilds.update("example", { test: "new string" });
+// Update a document that matches a filter
+await db.guilds.updateOne({ test: "123" }, { test: "new string" });
 // Delete a document
 db.guilds.delete("example");
+// Delete a document that matches a filter
+await db.guilds.deleteOne({ test: "123" });
+// Delete all document that matches a filter
+await db.guilds.deleteMany({ test: "123" });
 ```
 
 ## Advanced Customizations
