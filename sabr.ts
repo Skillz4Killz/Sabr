@@ -20,6 +20,7 @@ export class Sabr {
   }
 
   /** This method allows you to customize how to handle errors from Sabr. */
+  // deno-lint-ignore no-explicit-any
   async error(...data: any[]) {
     console.error(...data);
   }
