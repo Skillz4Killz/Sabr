@@ -66,7 +66,7 @@ export class SabrTable<T> {
     } catch {
       return false;
     }
-	}
+  }
 
   /** Creates a new document into a table. */
   create(id: string, data: Record<string, unknown> = {}) {
@@ -79,7 +79,7 @@ export class SabrTable<T> {
 
   /** Updates a documents data. If this document does not exist, it will create the document. */
   async update(id: string, data: Record<string, unknown> = {}) {
-		const existing = await this.get(id) || {};
+    const existing = await this.get(id) || {};
     return this.create(id, existing ? { ...existing, ...data } : data);
   }
 
