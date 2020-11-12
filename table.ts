@@ -133,7 +133,7 @@ export class SabrTable<T> {
   }
 
   /** Creates a new document into a table. */
-  create(id: string, data: Record<string, unknown> = {}) {
+  create(id: string, data: Partial<T> = {}) {
     const encoded = encoder.encode(JSON.stringify({ id, ...data }));
     return Deno.writeFileSync(
       `${this.sabr.directoryPath}${this.name}/${id}.json`,
@@ -142,13 +142,13 @@ export class SabrTable<T> {
   }
 
   /** Updates a documents data. If this document does not exist, it will create the document. */
-  async update(id: string, data: Record<string, unknown> = {}) {
+  async update(id: string, data: Partial<T> = {}) {
     const existing = await this.get(id) || {};
     return this.create(id, existing ? { ...existing, ...data } : data);
   }
 
   /** Gets the first document from a table that match a filter */
-  async updateOne(filter: Record<string, unknown> | ((value: T) => boolean), data: Record<string, unknown>) {
+  async updateOne(filter: Partial<T> | ((value: T) => boolean), data: Partial<T>) {
     for await (const file of Deno.readDir(Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`))) {
       if (!file.name || !file.isFile) continue;
 
@@ -160,7 +160,8 @@ export class SabrTable<T> {
           if (typeof filter === "function" ) {
             if (filter(json)) return this.update(name, data);
           } else {
-            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== filter[key])
+            // deno-lint-ignore no-explicit-any
+            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== (filter as any)[key])
             if (!invalid) return this.update(name, data);
           }
         }
@@ -179,7 +180,7 @@ export class SabrTable<T> {
   }
 
   /** Deletes one document in a table that match a filter */
-  async deleteOne(filter: Record<string, unknown> | ((value: T) => boolean)) {
+  async deleteOne(filter: Partial<T> | ((value: T) => boolean)) {
     const files = Deno.readDirSync(
       Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
     );
@@ -195,7 +196,8 @@ export class SabrTable<T> {
           if (typeof filter === "function" ) {
             return this.delete(name)
           } else {
-            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== filter[key])
+            // deno-lint-ignore no-explicit-any
+            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== (filter as any)[key])
             if (!invalid) return this.delete(name);
           }
         }
@@ -209,7 +211,7 @@ export class SabrTable<T> {
   }
 
   /** Deletes all documents in a table that match a filter */
-  async deleteMany(filter: Record<string, unknown> | ((value: T) => boolean)) {
+  async deleteMany(filter: Partial<T> | ((value: T) => boolean)) {
     const files = Deno.readDirSync(
       Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
     );
@@ -225,7 +227,8 @@ export class SabrTable<T> {
           if (typeof filter === "function" ) {
             this.delete(name)
           } else {
-            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== filter[key])
+            // deno-lint-ignore no-explicit-any
+            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== (filter as any)[key])
             if (!invalid) this.delete(name);
           }
         }
