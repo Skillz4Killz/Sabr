@@ -5,6 +5,8 @@ stable: true
 entry: mod.ts
 repository: 'https://github.com/Skillz4Killz/Sabr'
 files:
-  - ./**/*
+  - LICENSE
+  - ./**/*.ts
+  - README.md
 checkAll: false
 unlisted: false
