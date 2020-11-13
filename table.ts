@@ -46,9 +46,18 @@ export class SabrTable<T> {
   }
 
   /** Get all documents from a table that match a filter */
-  async findMany(filter: Record<string, unknown> | ((value: T) => boolean), returnArray?: false): Promise<Map<string, T>>;
-  async findMany(filter: Record<string, unknown> | ((value: T) => boolean), returnArray?: true): Promise<T[]>;
-  async findMany(filter: Record<string, unknown> | ((value: T) => boolean), returnArray = false) {
+  async findMany(
+    filter: Record<string, unknown> | ((value: T) => boolean),
+    returnArray?: false,
+  ): Promise<Map<string, T>>;
+  async findMany(
+    filter: Record<string, unknown> | ((value: T) => boolean),
+    returnArray?: true,
+  ): Promise<T[]>;
+  async findMany(
+    filter: Record<string, unknown> | ((value: T) => boolean),
+    returnArray = false,
+  ) {
     const files = Deno.readDirSync(
       Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
     );
@@ -63,10 +72,12 @@ export class SabrTable<T> {
         const name = file.name.substring(0, file.name.lastIndexOf("."));
         const json = await this.get(name);
         if (json) {
-          if (typeof filter === "function" ) {
+          if (typeof filter === "function") {
             if (filter(json)) data.set(name, json);
           } else {
-            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== filter[key])
+            const invalid = Object.keys(filter).find((key) =>
+              (json as Record<string, unknown>)[key] !== filter[key]
+            );
             if (!invalid) data.set(name, json);
           }
         }
@@ -83,7 +94,11 @@ export class SabrTable<T> {
 
   /** Gets the first document from a table that match a filter */
   async findOne(filter: Record<string, unknown> | ((value: T) => boolean)) {
-    for await (const file of Deno.readDir(Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`))) {
+    for await (
+      const file of Deno.readDir(
+        Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
+      )
+    ) {
       if (!file.name || !file.isFile) continue;
 
       try {
@@ -91,10 +106,12 @@ export class SabrTable<T> {
         const name = file.name.substring(0, file.name.lastIndexOf("."));
         const json = await this.get(name);
         if (json) {
-          if (typeof filter === "function" ) {
+          if (typeof filter === "function") {
             if (filter(json)) return json;
           } else {
-            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== filter[key])
+            const invalid = Object.keys(filter).find((key) =>
+              (json as Record<string, unknown>)[key] !== filter[key]
+            );
             if (!invalid) return json;
           }
         }
@@ -148,8 +165,15 @@ export class SabrTable<T> {
   }
 
   /** Gets the first document from a table that match a filter */
-  async updateOne(filter: Partial<T> | ((value: T) => boolean), data: Partial<T>) {
-    for await (const file of Deno.readDir(Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`))) {
+  async updateOne(
+    filter: Partial<T> | ((value: T) => boolean),
+    data: Partial<T>,
+  ) {
+    for await (
+      const file of Deno.readDir(
+        Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
+      )
+    ) {
       if (!file.name || !file.isFile) continue;
 
       try {
@@ -157,11 +181,13 @@ export class SabrTable<T> {
         const name = file.name.substring(0, file.name.lastIndexOf("."));
         const json = await this.get(name);
         if (json) {
-          if (typeof filter === "function" ) {
+          if (typeof filter === "function") {
             if (filter(json)) return this.update(name, data);
           } else {
             // deno-lint-ignore no-explicit-any
-            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== (filter as any)[key])
+            const invalid = Object.keys(filter).find((key) =>
+              (json as Record<string, unknown>)[key] !== (filter as any)[key]
+            );
             if (!invalid) return this.update(name, data);
           }
         }
@@ -193,11 +219,13 @@ export class SabrTable<T> {
         const name = file.name.substring(0, file.name.lastIndexOf("."));
         const json = await this.get(name);
         if (json) {
-          if (typeof filter === "function" ) {
-            return this.delete(name)
+          if (typeof filter === "function") {
+            return this.delete(name);
           } else {
             // deno-lint-ignore no-explicit-any
-            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== (filter as any)[key])
+            const invalid = Object.keys(filter).find((key) =>
+              (json as Record<string, unknown>)[key] !== (filter as any)[key]
+            );
             if (!invalid) return this.delete(name);
           }
         }
@@ -224,11 +252,13 @@ export class SabrTable<T> {
         const name = file.name.substring(0, file.name.lastIndexOf("."));
         const json = await this.get(name);
         if (json) {
-          if (typeof filter === "function" ) {
-            this.delete(name)
+          if (typeof filter === "function") {
+            this.delete(name);
           } else {
             // deno-lint-ignore no-explicit-any
-            const invalid = Object.keys(filter).find(key => (json as Record<string, unknown>)[key] !== (filter as any)[key])
+            const invalid = Object.keys(filter).find((key) =>
+              (json as Record<string, unknown>)[key] !== (filter as any)[key]
+            );
             if (!invalid) this.delete(name);
           }
         }
