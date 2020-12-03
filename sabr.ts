@@ -1,10 +1,8 @@
 import { SabrTable } from "./table.ts";
+import { fromFileUrl } from "./deps.ts";
 
 export class Sabr {
-  // The 7 index removes file:// which does not let it work. The last / index remove the mod.ts file name
-  directoryPath = `${
-    Deno.mainModule.substring(7, Deno.mainModule.lastIndexOf("/"))
-  }/db/`;
+  directoryPath = `${fromFileUrl(Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/")))}/db/`
   tables = new Map<string, SabrTable<unknown>>();
 
   /** Initializes the database which makes sure that the folder exists. */
