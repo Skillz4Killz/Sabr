@@ -1,7 +1,7 @@
 # Sabr
 
 [![Discord](https://img.shields.io/discord/223909216866402304?color=7289da&logo=discord&logoColor=white)](https://discord.gg/J4NqJ72)
-[![nest.land](https://nest.land/badge-large.svg)](https://nest.land/package/Sabr)
+[![nest.land](https://nest.land/badge.svg)](https://nest.land/package/Sabr)
 
 Deno database using JSON files for quick prototyping with amazing TypeScript support!
 
@@ -95,14 +95,15 @@ Customizing the database folder path is possible.
 
 ```ts
 import { Sabr, SabrTable } from "https://deno.land/x/Sabr@v1.0.0/mod.ts";
+import { fromFileUrl } from "https://deno.land/std@0.79.0/path/mod.ts";
 
 // Create the database class
 const sabr = new Sabr();
 
 // By default Sabr will create a folder called `db` in the same directory where you ran your code, using deno run .... mod.ts
 // If you wish to change the directory, you can override the path as shown below
-// The 7 index removes file:// which does not let it work. The last / index remove the mod.ts file name
-sabr.directoryPath = `${Deno.mainModule.substring(7, Deno.mainModule.lastIndexOf("/"))}/database/`;
+// fromFileUrl converts the file:/// path to a valid system path. The last / index remove the mod.ts file name
+sabr.directoryPath = `${fromFileUrl(Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/")))}/database/`;
 ```
 
 Customizing the error handling.
