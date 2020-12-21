@@ -151,6 +151,12 @@ export class SabrTable<T> {
 
   /** Creates a new document into a table. */
   create(id: string, data: Partial<T> = {}) {
+    if (this.has(id)) {
+      this.sabr.error(
+        `[Sabr Error: create] Cannot create already existing file file://${this.sabr.directoryPath}${this.name}/${id}.json`,
+      );
+    }
+
     const encoded = encoder.encode(JSON.stringify({ id, ...data }));
     return Deno.writeFileSync(
       `${this.sabr.directoryPath}${this.name}/${id}.json`,
