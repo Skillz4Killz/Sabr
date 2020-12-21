@@ -1,8 +1,10 @@
-import { SabrTable } from "./table.ts";
 import { fromFileUrl } from "./deps.ts";
+import { SabrTable } from "./table.ts";
 
 export class Sabr {
-  directoryPath = `${fromFileUrl(Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/")))}/db/`
+  directoryPath = `${
+    fromFileUrl(Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/")))
+  }/db/`;
   tables = new Map<string, SabrTable<unknown>>();
 
   /** Initializes the database which makes sure that the folder exists. */
@@ -10,9 +12,11 @@ export class Sabr {
     // Must make the db folder before making the tables themselves
     await Deno.mkdir(this.directoryPath).catch(() => undefined);
     // Make the folders for each table
-    this.tables.forEach((table) =>
-      Deno.mkdir(`${this.directoryPath}/${table.name}`).catch(() => undefined)
-    );
+    for (let table of this.tables) {
+      await Deno.mkdir(`${this.directoryPath}/${table[1].name}`).catch(() =>
+        undefined
+      );
+    }
 
     return this;
   }
