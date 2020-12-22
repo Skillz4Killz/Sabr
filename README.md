@@ -14,7 +14,7 @@ This should not be used in large scale production projects. This is only meant t
 ```ts
 // database.ts file
 
-import { Sabr, SabrTable } from "https://deno.land/x/Sabr@v1.0.0/mod.ts";
+import { Sabr, SabrTable } from "https://deno.land/x/sabr@1.1.4/mod.ts";
 
 // Create the database class
 const sabr = new Sabr();
@@ -94,8 +94,8 @@ await db.guilds.deleteMany({ test: "123" });
 Customizing the database folder path is possible.
 
 ```ts
-import { Sabr, SabrTable } from "https://deno.land/x/Sabr@v1.0.0/mod.ts";
-import { fromFileUrl } from "https://deno.land/std@0.79.0/path/mod.ts";
+import { Sabr, SabrTable } from "https://deno.land/x/sabr@1.1.4/mod.ts";
+import { fromFileUrl } from "https://deno.land/std@0.81.0/path/mod.ts";
 
 // Create the database class
 const sabr = new Sabr();
@@ -108,7 +108,7 @@ sabr.directoryPath = `${fromFileUrl(Deno.mainModule.substring(0, Deno.mainModule
 
 Customizing the error handling.
 ```ts
-import { Sabr, SabrTable } from "https://deno.land/x/Sabr@v1.0.0/mod.ts";
+import { Sabr, SabrTable } from "https://deno.land/x/sabr@1.1.4/mod.ts";
 
 class CustomSabr extends Sabr {
 	error(...data: any[]) {
