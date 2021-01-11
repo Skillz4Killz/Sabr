@@ -12,7 +12,8 @@ export class Sabr {
     // Must make the db folder before making the tables themselves
     await Deno.mkdir(this.directoryPath).catch(() => undefined);
     // Make the folders for each table
-    for (let table of this.tables) {
+    let table;
+    for (table of this.tables) {
       await Deno.mkdir(`${this.directoryPath}/${table[1].name}`).catch(() =>
         undefined
       );
@@ -22,7 +23,7 @@ export class Sabr {
   }
 
   /** This method allows you to customize how to handle errors from Sabr. */
-  // deno-lint-ignore no-explicit-any
+  // deno-lint-ignore no-explicit-any require-await
   async error(...data: any[]) {
     console.error(...data);
   }

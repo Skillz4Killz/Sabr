@@ -190,8 +190,8 @@ export class SabrTable<T> {
           if (typeof filter === "function") {
             if (filter(json)) return this.update(name, data);
           } else {
-            // deno-lint-ignore no-explicit-any
             const invalid = Object.keys(filter).find((key) =>
+            // deno-lint-ignore no-explicit-any
               (json as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) return this.update(name, data);
@@ -228,9 +228,9 @@ export class SabrTable<T> {
           if (typeof filter === "function") {
             return this.delete(name);
           } else {
-            // deno-lint-ignore no-explicit-any
             const invalid = Object.keys(filter).find((key) =>
-              (json as Record<string, unknown>)[key] !== (filter as any)[key]
+            // deno-lint-ignore no-explicit-any
+            (json as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) return this.delete(name);
           }
@@ -261,8 +261,8 @@ export class SabrTable<T> {
           if (typeof filter === "function") {
             this.delete(name);
           } else {
-            // deno-lint-ignore no-explicit-any
             const invalid = Object.keys(filter).find((key) =>
+            // deno-lint-ignore no-explicit-any
               (json as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) this.delete(name);
