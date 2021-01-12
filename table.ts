@@ -150,8 +150,8 @@ export class SabrTable<T> {
   }
 
   /** Creates a new document into a table. */
-  create(id: string, data: Partial<T> = {}) {
-    if (this.has(id)) {
+  create(id: string, data: Partial<T> = {}, update= false) {
+    if (this.has(id) && !update) {
       this.sabr.error(
         `[Sabr Error: create] Cannot create already existing file file://${this.sabr.directoryPath}${this.name}/${id}.json`,
       );
@@ -167,7 +167,7 @@ export class SabrTable<T> {
   /** Updates a documents data. If this document does not exist, it will create the document. */
   async update(id: string, data: Partial<T> = {}) {
     const existing = await this.get(id) || {};
-    return this.create(id, existing ? { ...existing, ...data } : data);
+    return this.create(id, existing ? { ...existing, ...data } : data, true);
   }
 
   /** Gets the first document from a table that match a filter */
