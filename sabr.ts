@@ -29,7 +29,8 @@ export class Sabr {
   }
 
   /** Checks if a table exists. */
-  hasTable(tableName: string) {
+  // deno-lint-ignore require-await
+  async hasTable(tableName: string) {
     try {
       Deno.readDirSync(`${this.directoryPath}/${tableName}`);
       return true;
@@ -50,7 +51,7 @@ export class Sabr {
   }
 
   /** Deletes a table. */
-  deleteTable(tableName: string) {
-    Deno.removeSync(`${this.directoryPath}/${tableName}`, { recursive: true });
+  async deleteTable(tableName: string) {
+    await Deno.remove(`${this.directoryPath}/${tableName}`, { recursive: true });
   }
 }
