@@ -167,7 +167,7 @@ export class SabrTable<T> {
   /** Updates a documents data. If this document does not exist, it will create the document. */
   async update(id: string, data: Partial<T> = {}) {
     const existing = await this.get(id) || {};
-    return this.create(id, existing ? { ...existing, ...data } : data);
+    return this.create(id, existing ? { ...existing, ...data } : data).catch(() => {});
   }
 
   /** Gets the first document from a table that match a filter */
