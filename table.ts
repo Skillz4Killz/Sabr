@@ -20,7 +20,7 @@ export class SabrTable<T> {
   async getAll(returnArray?: false): Promise<Map<string, T>>;
   async getAll(returnArray?: true): Promise<T[]>;
   async getAll(returnArray = false) {
-    const files = Deno.readDirSync(
+    const files = await Deno.readDir(
       Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
     );
 
@@ -58,7 +58,7 @@ export class SabrTable<T> {
     filter: Record<string, unknown> | ((value: T) => boolean),
     returnArray = false,
   ) {
-    const files = Deno.readDirSync(
+    const files = await Deno.readDir(
       Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
     );
 
@@ -213,7 +213,7 @@ export class SabrTable<T> {
 
   /** Deletes one document in a table that match a filter */
   async deleteOne(filter: Partial<T> | ((value: T) => boolean)) {
-    const files = Deno.readDirSync(
+    const files = await Deno.readDir(
       Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
     );
 
@@ -246,7 +246,7 @@ export class SabrTable<T> {
 
   /** Deletes all documents in a table that match a filter */
   async deleteMany(filter: Partial<T> | ((value: T) => boolean)) {
-    const files = Deno.readDirSync(
+    const files = await Deno.readDir(
       Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
     );
 
