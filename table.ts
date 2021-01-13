@@ -20,13 +20,13 @@ export class SabrTable<T> {
   async getAll(returnArray?: false): Promise<Map<string, T>>;
   async getAll(returnArray?: true): Promise<T[]>;
   async getAll(returnArray = false) {
-    const files = await Deno.readDir(
-      Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
-    );
-
     const data = new Map<string, T>();
 
-    for (const file of files) {
+    for await (
+      const file of Deno.readDir(
+        Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
+      )
+    ) {
       if (!file.name || !file.isFile) continue;
 
       try {
@@ -58,13 +58,13 @@ export class SabrTable<T> {
     filter: Record<string, unknown> | ((value: T) => boolean),
     returnArray = false,
   ) {
-    const files = await Deno.readDir(
-      Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
-    );
-
     const data = new Map<string, T>();
 
-    for (const file of files) {
+    for await (
+      const file of Deno.readDir(
+        Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
+      )
+    ) {
       if (!file.name || !file.isFile) continue;
 
       try {
@@ -191,7 +191,7 @@ export class SabrTable<T> {
             if (filter(json)) return this.update(name, data);
           } else {
             const invalid = Object.keys(filter).find((key) =>
-            // deno-lint-ignore no-explicit-any
+              // deno-lint-ignore no-explicit-any
               (json as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) return this.update(name, data);
@@ -213,11 +213,11 @@ export class SabrTable<T> {
 
   /** Deletes one document in a table that match a filter */
   async deleteOne(filter: Partial<T> | ((value: T) => boolean)) {
-    const files = await Deno.readDir(
-      Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
-    );
-
-    for (const file of files) {
+    for await (
+      const file of Deno.readDir(
+        Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
+      )
+    ) {
       if (!file.name || !file.isFile) continue;
 
       try {
@@ -229,8 +229,8 @@ export class SabrTable<T> {
             return this.delete(name);
           } else {
             const invalid = Object.keys(filter).find((key) =>
-            // deno-lint-ignore no-explicit-any
-            (json as Record<string, unknown>)[key] !== (filter as any)[key]
+              // deno-lint-ignore no-explicit-any
+              (json as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) return this.delete(name);
           }
@@ -246,11 +246,11 @@ export class SabrTable<T> {
 
   /** Deletes all documents in a table that match a filter */
   async deleteMany(filter: Partial<T> | ((value: T) => boolean)) {
-    const files = await Deno.readDir(
-      Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
-    );
-
-    for (const file of files) {
+    for await (
+      const file of Deno.readDir(
+        Deno.realPathSync(`${this.sabr.directoryPath}${this.name}`),
+      )
+    ) {
       if (!file.name || !file.isFile) continue;
 
       try {
@@ -262,7 +262,7 @@ export class SabrTable<T> {
             this.delete(name);
           } else {
             const invalid = Object.keys(filter).find((key) =>
-            // deno-lint-ignore no-explicit-any
+              // deno-lint-ignore no-explicit-any
               (json as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) this.delete(name);
