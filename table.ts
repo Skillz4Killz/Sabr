@@ -149,25 +149,27 @@ export class SabrTable<T> {
     }
   }
 
+  // deno-lint-ignore require-await
+  private async editFile(id: string, data: Partial<T>) {
+    const encoded = encoder.encode(JSON.stringify({id, ...data}));
+    return Deno.writeFile(`${this.sabr.directoryPath}${this.name}/${id}.json`, encoded)
+  }
+
   /** Creates a new document into a table. */
-  async create(id: string, data: Partial<T> = {}) {
+  async create(id: string, data: T) {
     if (await this.has(id)) {
-      this.sabr.error(
+      return this.sabr.error(
         `[Sabr Error: create] Cannot create already existing file file://${this.sabr.directoryPath}${this.name}/${id}.json`,
       );
     }
 
-    const encoded = encoder.encode(JSON.stringify({ id, ...data }));
-    return Deno.writeFile(
-      `${this.sabr.directoryPath}${this.name}/${id}.json`,
-      encoded,
-    );
+    return this.editFile(id, data)
   }
 
   /** Updates a documents data. If this document does not exist, it will create the document. */
   async update(id: string, data: Partial<T> = {}) {
     const existing = await this.get(id) || {};
-    return this.create(id, existing ? { ...existing, ...data } : data);
+    return this.editFile(id, existing ? { ...existing, ...data } : data);
   }
 
   /** Gets the first document from a table that match a filter */
