@@ -140,9 +140,9 @@ export class SabrTable<T> {
   }
 
   /** Checks if a document exists. */
-  has(id: string) {
+  async has(id: string) {
     try {
-      Deno.readFileSync(`${this.sabr.directoryPath}${this.name}/${id}.json`);
+      await Deno.readFile(`${this.sabr.directoryPath}${this.name}/${id}.json`);
       return true;
     } catch {
       return false;
@@ -150,15 +150,15 @@ export class SabrTable<T> {
   }
 
   /** Creates a new document into a table. */
-  create(id: string, data: Partial<T> = {}) {
-    if (this.has(id)) {
+  async create(id: string, data: Partial<T> = {}) {
+    if (await this.has(id)) {
       this.sabr.error(
         `[Sabr Error: create] Cannot create already existing file file://${this.sabr.directoryPath}${this.name}/${id}.json`,
       );
     }
 
     const encoded = encoder.encode(JSON.stringify({ id, ...data }));
-    return Deno.writeFileSync(
+    return Deno.writeFile(
       `${this.sabr.directoryPath}${this.name}/${id}.json`,
       encoded,
     );
@@ -207,8 +207,8 @@ export class SabrTable<T> {
   }
 
   /** Deletes a document from the table. */
-  delete(id: string) {
-    Deno.removeSync(`${this.sabr.directoryPath}${this.name}/${id}.json`);
+  async delete(id: string) {
+    await Deno.remove(`${this.sabr.directoryPath}${this.name}/${id}.json`);
   }
 
   /** Deletes one document in a table that match a filter */
