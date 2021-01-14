@@ -1,4 +1,5 @@
 import { Sabr } from "./sabr.ts";
+import { deepMerge, RecursivePartial } from "./utils.ts";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder("utf-8");
@@ -167,15 +168,16 @@ export class SabrTable<T> {
   }
 
   /** Updates a documents data. If this document does not exist, it will create the document. */
-  async update(id: string, data: Partial<T> = {}) {
-    const existing = await this.get(id) || {};
-    return this.editFile(id, existing ? { ...existing, ...data } : data);
+  async update(id: string, data: RecursivePartial<T> = {}) {
+    const existing = (await this.get(id)) || {};
+    const updated = deepMerge(existing, data) as Partial<T>;
+    return this.editFile(id, updated);
   }
 
   /** Gets the first document from a table that match a filter */
   async updateOne(
     filter: Partial<T> | ((value: T) => boolean),
-    data: Partial<T>,
+    data: RecursivePartial<T>
   ) {
     for await (
       const file of Deno.readDir(
