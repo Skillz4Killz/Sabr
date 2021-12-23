@@ -77,7 +77,7 @@ export class SabrTable<T> {
             if (filter(json)) data.set(name, json);
           } else {
             const invalid = Object.keys(filter).find((key) =>
-              (json as Record<string, unknown>)[key] !== filter[key]
+              (json as unknown as Record<string, unknown>)[key] !== filter[key]
             );
             if (!invalid) data.set(name, json);
           }
@@ -111,7 +111,7 @@ export class SabrTable<T> {
             if (filter(json)) return json;
           } else {
             const invalid = Object.keys(filter).find((key) =>
-              (json as Record<string, unknown>)[key] !== filter[key]
+              (json as unknown as Record<string, unknown>)[key] !== filter[key]
             );
             if (!invalid) return json;
           }
@@ -196,7 +196,7 @@ export class SabrTable<T> {
           } else {
             const invalid = Object.keys(filter).find((key) =>
               // deno-lint-ignore no-explicit-any
-              (json as Record<string, unknown>)[key] !== (filter as any)[key]
+              (json as unknown as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) return this.update(name, data);
           }
@@ -214,7 +214,7 @@ export class SabrTable<T> {
   async delete(id: string) {
     try {
       await Deno.remove(`${this.sabr.directoryPath}${this.name}/${id}.json`);
-    } catch (error) {
+    } catch (_error) {
       this.sabr.error(
         `[Sabr Error: delete]: Unable to delete file ${this.sabr.directoryPath}${this.name}/${id}.json`
       )
@@ -240,7 +240,7 @@ export class SabrTable<T> {
           } else {
             const invalid = Object.keys(filter).find((key) =>
               // deno-lint-ignore no-explicit-any
-              (json as Record<string, unknown>)[key] !== (filter as any)[key]
+              (json as unknown as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) return this.delete(name);
           }
@@ -273,7 +273,7 @@ export class SabrTable<T> {
           } else {
             const invalid = Object.keys(filter).find((key) =>
               // deno-lint-ignore no-explicit-any
-              (json as Record<string, unknown>)[key] !== (filter as any)[key]
+              (json as unknown as Record<string, unknown>)[key] !== (filter as any)[key]
             );
             if (!invalid) this.delete(name);
           }
